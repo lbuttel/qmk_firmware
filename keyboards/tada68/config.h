@@ -61,7 +61,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 /* Backlight configuration
  */
-#define BACKLIGHT_LEVELS 8  
+#define BACKLIGHT_LEVELS 4
 #define BACKLIGHT_BREATHING
 
 /*

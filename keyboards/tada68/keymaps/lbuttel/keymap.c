@@ -7,15 +7,29 @@
 #define _BL 0
 #define _FL1 1
 #define _FL2 2
-#define _FL3 3 
+#define _FL3 3
 
 #define _______ KC_TRNS
 
 // tap dance
 #define TD_DOT_COM 0
 
+// custom functions
+#define NPAD 0
+#define BLDN 1
+#define BLUP 2
+
+//led mode
+uint8_t led_mode = 0;
+
 qk_tap_dance_action_t tap_dance_actions[] = {
   [TD_DOT_COM] = ACTION_TAP_DANCE_DOUBLE(KC_PDOT, KC_PCMM)
+};
+
+const uint16_t PROGMEM fn_actions[] = {
+  [NPAD] = ACTION_FUNCTION(NPAD),  // Calls action_function()
+  [BLDN] = ACTION_FUNCTION(BLDN),
+  [BLUP] = ACTION_FUNCTION(BLUP),
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -37,7 +51,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_TAB   ,KC_Q,   KC_W,   KC_E,   KC_R,   KC_T,   KC_Y,   KC_U,   KC_I,   KC_O,   KC_P,   KC_LBRC, KC_RBRC, KC_BSLS, KC_DEL, \
   LT(_FL2,KC_DEL),KC_A,KC_S, KC_D,   KC_F,   KC_G,   KC_H ,  KC_J,   KC_K,   KC_L,   KC_SCLN, KC_QUOT,       KC_ENT,  KC_PGUP, \
   OSM(MOD_LSFT),KC_Z, KC_X,   KC_C,   KC_V,   KC_B,   KC_N,   KC_M,   KC_COMM, KC_DOT, KC_SLSH, OSM(MOD_RSFT), KC_UP, KC_PGDN, \
-  KC_LCTL, KC_LGUI, KC_LALT,            LT(_FL1, KC_SPC)             , KC_RALT, TG(_FL3), KC_RCTRL, KC_LEFT, KC_DOWN, KC_RGHT),
+  KC_LCTL, KC_LGUI, KC_LALT,             LT(_FL1, KC_SPC)             , KC_RALT, F(NPAD), KC_RCTRL, KC_LEFT, KC_DOWN, KC_RGHT),
 
   /* Keymap _FL1: Function Layer
    * ,----------------------------------------------------------------.
@@ -56,7 +70,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______,   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,   KC_F11,   KC_F12,  KC_DEL,  KC_INS, \
   _______  , _______, KC_MS_BTN1, KC_MS_UP, KC_MS_BTN2,_______,_______, KC_PGUP, KC_UP, KC_PGDN, _______, _______,_______, _______,KC_HOME, \
   _______    , KC_MS_BTN3, KC_MS_LEFT, KC_MS_DOWN, KC_MS_RIGHT,_______, KC_HOME, KC_LEFT, KC_DOWN, KC_RIGHT,_______,_______,_______,KC_END, \
-  _______      , _______, _______,  BL_DEC,  BL_TOGG,  BL_INC, KC_END ,   KC_MUTE,   KC_VOLD,  KC_VOLU, _______, KC_BTN1, KC_MS_U, KC_BTN2, \
+  _______      , _______, _______, F(BLDN),  BL_TOGG, F(BLUP), KC_END ,   KC_MUTE,   KC_VOLD,  KC_VOLU, _______, KC_BTN1, KC_MS_U, KC_BTN2, \
   _______, _______, _______,                 _______                                  , _______, _______, _______,KC_MS_L,KC_MS_D, KC_MS_R),
 
 
@@ -102,16 +116,55 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______ , _______, _______,                 KC_KP_0                              ,TD(TD_DOT_COM),_______,_______,_______,_______,_______),
 };
 
+void tap(uint16_t keycode){
+  register_code(keycode);
+  unregister_code(keycode);
+}
+
 void action_function(keyrecord_t *record, uint8_t id, uint8_t opt) {
 
   switch (id) {
-    case 0:
+    case NPAD:
       if (record->event.pressed) {
         layer_invert(_FL3);
-	add_key(KC_NLCK);
-	del_key(KC_NLCK);
-//	breathing_speed_set(3);
-		breathing_pulse();
+        tap(KC_NLCK);
       }
+    break;
+    case BLDN:
+      if (record->event.pressed) {
+        if (led_mode < 5) {
+          led_mode == 0 ? backlight_set(0) : backlight_set(--led_mode);
+        } else if (led_mode == 5) {
+          breathing_disable();
+          backlight_set(--led_mode);
+        } else {
+          breathing_speed_dec(1);
+          led_mode--;
+        }
+      }
+    break;
+    case BLUP:
+      if (record->event.pressed) {
+        if (led_mode < 4) {
+          backlight_set(++led_mode);
+        } else if (led_mode == 4) {
+          breathing_speed_set(++led_mode);
+          breathing_enable();
+        } else if (led_mode > 4) {
+          breathing_speed_inc(1);
+          led_mode++;
+        }
+      }
+    break;
   }
 };
+
+void led_set_user(uint8_t usb_led) {
+  if (usb_led & (1<<USB_LED_CAPS_LOCK)) {
+    // Turn capslock on
+    PORTB |= (1<<6);
+  } else {
+    // Turn capslock off
+    PORTB &= ~(1<<6);
+  }
+}

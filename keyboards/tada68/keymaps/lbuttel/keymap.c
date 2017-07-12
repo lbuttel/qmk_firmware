@@ -1,4 +1,5 @@
 #include "tada68.h"
+#include "keymap_german.h"
 
 // Each layer gets a name for readability, which is then used in the keymap matrix below.
 // The underscores don't mean anything - you can have a layer called STUFF or any other name.
@@ -43,7 +44,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * |----------------------------------------------------------------|
    * |Shift   |  Z|  X|  C|  V|  B|  N|  M|  ,|  .|  /|Shift | Up|PgDn|
    * |----------------------------------------------------------------|
-   * |Ctrl|Win |Alt |        SpaceFn        |Alt|Fn1|Ctrl|Lef|Dow|Rig |
+   * |Ctrl|Win |Alt |       SpaceFn1        |Alt|Fn3|Ctrl|Lef|Dow|Rig |
    * `----------------------------------------------------------------'
    */
 [_BL] = KEYMAP_ANSI(
@@ -57,30 +58,30 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * ,----------------------------------------------------------------.
    * |   | F1|F2 |F3 |F4 |F5 |F6 |F7 |F8 |F9 |F10|F11|F12|Del    |Ins |
    * |----------------------------------------------------------------|
-   * |     |   |Mcl|MsU|Mcr|   |   |PgU| Up|PgD|   |   |   |     |Hme |
+   * |     |   |McL|MsU|McR|   |   |PgU| Up|PgD|   | Ü |   |     |Hme |
    * |----------------------------------------------------------------|
-   * |      |Mcm|MsL|MsD|MsR|   |Hme|Lef|Dow|Rig|   |   |        |End |
+   * |      |McM|MsL|MsD|MsR|   |Hme|Lef|Dow|Rig| Ö | Ä |        |End |
    * |----------------------------------------------------------------|
-   * |        |   |   |Bl-|BL |BL+|End|MUT|VU-|VU+|   |   McL|MsU|McR |
+   * |        |   |   |Bl-|BL |BL+|End|MUT|VU-|VU+| ß |      |   |    |
    * |----------------------------------------------------------------|
-   * |    |    |    |                       |   |   |    |MsL|MsD|MsR |
+   * |    |    |    |                        |   |   |   |   |   |    |
    * `----------------------------------------------------------------'
    */
 [_FL1] = KEYMAP_ANSI(
   _______,   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,   KC_F11,   KC_F12,  KC_DEL,  KC_INS, \
-  _______  , _______, KC_MS_BTN1, KC_MS_UP, KC_MS_BTN2,_______,_______, KC_PGUP, KC_UP, KC_PGDN, _______, _______,_______, _______,KC_HOME, \
-  _______    , KC_MS_BTN3, KC_MS_LEFT, KC_MS_DOWN, KC_MS_RIGHT,_______, KC_HOME, KC_LEFT, KC_DOWN, KC_RIGHT,_______,_______,_______,KC_END, \
-  _______      , _______, _______, F(BLDN),  BL_TOGG, F(BLUP), KC_END ,   KC_MUTE,   KC_VOLD,  KC_VOLU, _______, KC_BTN1, KC_MS_U, KC_BTN2, \
-  _______, _______, _______,                 _______                                  , _______, _______, _______,KC_MS_L,KC_MS_D, KC_MS_R),
+  _______  , _______, KC_MS_BTN1,KC_MS_UP,KC_MS_BTN2,_______,_______, KC_PGUP, KC_UP, KC_PGDN, _______,RALT(KC_Y),_______, _______,KC_HOME, \
+  _______    , KC_MS_BTN3, KC_MS_LEFT,KC_MS_DOWN,KC_MS_RIGHT,_______,KC_HOME,KC_LEFT,KC_DOWN,KC_RIGHT,RALT(KC_P),RALT(KC_Q),_______,KC_END, \
+  _______      , _______, _______, F(BLDN),  BL_TOGG, F(BLUP), KC_END ,  KC_MUTE,  KC_VOLD,  KC_VOLU,RALT(KC_S), _______, _______, _______, \
+  _______, _______, _______,                 _______                                , _______, _______, _______, _______, _______, _______),
 
 
   /* Keymap _FL2: Programming Layer
    * ,----------------------------------------------------------------.
    * |   |   |   |   |   |   |   |   |   |Dbg|Cpl|   |   |       |    |
    * |----------------------------------------------------------------|
-   * |     |   | ^ | / | - | | | & | + | * | = | ! | ? |   |     |    |
+   * |     |   | % | / | - | | | & | + | * | ^ | ! | ? |   |     |    |
    * |----------------------------------------------------------------|
-   * |      |   | < | [ | { | ( | ) | } | ] | > |   |   |        |    |
+   * |      |   | < | [ | { | ( | ) | } | ] | > | = |   |        |    |
    * |----------------------------------------------------------------|
    * |        |   |   |   |   |   |   |   |   |   |   |      |   |    |
    * |----------------------------------------------------------------|
@@ -89,8 +90,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    */
 [_FL2] = KEYMAP_ANSI(
   _______,_______,_______,_______,_______,_______,_______,_______,_______,LSFT(KC_F9),LSFT(KC_F10), _______, _______,     _______, _______, \
-  _______  , _______, KC_CIRC, KC_SLSH, KC_MINS, KC_PIPE, KC_AMPR, KC_PLUS, KC_ASTR,  KC_EQL, KC_EXLM, KC_QUES, _______,  _______, _______, \
-  _______    , _______, KC_LABK, KC_LBRC, KC_LCBR, KC_LPRN, KC_RPRN, KC_RCBR, KC_RBRC, KC_RABK, _______, _______,         _______, _______, \
+  _______  , _______, KC_PERC, KC_SLSH, KC_MINS, KC_PIPE, KC_AMPR, KC_PLUS, KC_ASTR, KC_CIRC, KC_EXLM, KC_QUES, _______,  _______, _______, \
+  _______    , _______, KC_LABK, KC_LBRC, KC_LCBR, KC_LPRN, KC_RPRN, KC_RCBR, KC_RBRC, KC_RABK,  KC_EQL, _______,         _______, _______, \
   _______      , _______, _______, _______, _______, _______, _______, _______, _______, _______, _______,       _______, _______, _______, \
   _______ , _______, _______,                 _______                               , _______, _______, _______, _______, _______, _______),
 

@@ -14,6 +14,7 @@
 
 // tap dance
 #define TD_DOT_COM 0
+#define TD_NP_SPC 1
 
 // custom functions
 #define NPAD 0
@@ -24,7 +25,8 @@
 uint8_t led_mode = 0;
 
 qk_tap_dance_action_t tap_dance_actions[] = {
-  [TD_DOT_COM] = ACTION_TAP_DANCE_DOUBLE(KC_PDOT, KC_PCMM)
+  [TD_DOT_COM] = ACTION_TAP_DANCE_DOUBLE(KC_PDOT, KC_PCMM),
+  [TD_NP_SPC] = ACTION_TAP_DANCE_DOUBLE(KC_KP_0, KC_SPC)
 };
 
 const uint16_t PROGMEM fn_actions[] = {
@@ -114,7 +116,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______  , _______, _______, _______, _______, _______, _______, KC_KP_7, KC_KP_8, KC_KP_9, _______, KC_PSLS, _______,  _______, _______, \
   _______    , _______, _______, _______, _______, _______, _______, KC_KP_4, KC_KP_5, KC_KP_6, KC_PMNS, KC_PAST,     KC_KP_ENTER, _______, \
   _______      , _______, _______, _______, _______, _______, _______, KC_KP_1, KC_KP_2, KC_KP_3, KC_PPLS,       _______, _______, _______, \
-  _______ , _______, _______,                 KC_KP_0                              ,TD(TD_DOT_COM),_______,_______,_______,_______,_______),
+  _______ , _______, _______,                 TD(TD_NP_SPC)                        ,TD(TD_DOT_COM),_______,_______,_______,_______,_______),
 };
 
 void tap(uint16_t keycode){

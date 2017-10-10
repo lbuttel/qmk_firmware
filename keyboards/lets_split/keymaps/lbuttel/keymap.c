@@ -24,11 +24,14 @@ extern keymap_config_t keymap_config;
 
 
 #define DANCINGLAYERS 0
-
+#define OH 1
 
 enum custom_keycodes {
   QWERTY = SAFE_RANGE,
   ONEHAND,
+  OTHERSIDE,
+  ONEHANDSYM,
+  OTHERSIDESYM,
   OHOFF,
   LOWER,
   RAISE,
@@ -42,21 +45,21 @@ enum custom_keycodes {
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 /* Qwerty
- * ,-----------------------------------------------------------------------------------.
+ * ,-----------------------------------------|-----------------------------------------.
  * | Esc  |   Q  |   W  |   E  |   R  |   T  |   Y  |   U  |   I  |   O  |   P  | Bksp |
- * |------+------+------+------+------+-------------+------+------+------+------+------|
+ * |------+------+------+------+------+------|------+------+------+------+------+------|
  * | Tab  |   A  |   S  |   D  |   F  |   G  |   H  |   J  |   K  |   L  |   ;  |  "   |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
  * | Shift|   Z  |   X  |   C  |   V  |   B  |   N  |   M  |   ,  |   .  |   /  |Shift |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
+ * |------+------+------+------+------+------|------+------+------+------+------+------|
  * | Ctrl | GUI  | Alt  |Lower |Shift |Space |Enter |Raise | Left | Down |  Up  |Right |
- * `-----------------------------------------------------------------------------------'
+ * `-----------------------------------------|-----------------------------------------'
  */
 [_QWERTY] = KEYMAP( \
-  KC_ESC       ,  KC_Q  ,    KC_W,    KC_E,  KC_R,                KC_T,              KC_Y,  KC_U,    KC_I,    KC_O,    KC_P,        KC_BSPC, \
-  KC_TAB       ,  KC_A  ,    KC_S,    KC_D,  KC_F,                KC_G,              KC_H,  KC_J,    KC_K,    KC_L, KC_SCLN,        KC_QUOT, \
-  OSM(MOD_LSFT), KC_Z   ,    KC_X,    KC_C,  KC_V,                KC_B,              KC_N,  KC_M, KC_COMM,  KC_DOT, KC_SLSH, OSM(MOD_RSFT) , \
-  KC_LCTL      , KC_LGUI, KC_LALT, _______, LOWER, LT(_NAVPAD, KC_SPC), LT(_NAVF, KC_ENT), RAISE, KC_LEFT, KC_DOWN,   KC_UP,        KC_RGHT \
+  KC_ESC       ,  KC_Q  ,    KC_W,    KC_E,  KC_R,                         KC_T,              KC_Y,  KC_U,    KC_I,    KC_O,    KC_P,       KC_BSPC, \
+  KC_TAB       ,  KC_A  ,    KC_S,    KC_D,  KC_F,                         KC_G,              KC_H,  KC_J,    KC_K,    KC_L, KC_SCLN,       KC_QUOT, \
+  OSM(MOD_LSFT), KC_Z   ,    KC_X,    KC_C,  KC_V,                         KC_B,              KC_N,  KC_M, KC_COMM,  KC_DOT, KC_SLSH, OSM(MOD_RSFT), \
+  KC_LCTL      , KC_LGUI, KC_LALT,   LOWER,  OSM(MOD_LSFT), LT(_NAVPAD, KC_SPC), LT(_NAVF, KC_ENT), RAISE, KC_LEFT, KC_DOWN,   KC_UP,       KC_RGHT \
 ),
 
 /* Nav
@@ -86,14 +89,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------|------+------+------+------+------+------|
  * |      |      |      |      |      |      |      |   1  |   2  |   3  |   +  |   *  |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
- * |      |      |      |      |      |      |      |   0  |   .  |   ,  |   ^  |   %  |
+ * | 1Hand|      |      |      |      |      |      |   0  |   .  |   ,  |   ^  |   %  |
  * `-----------------------------------------|-----------------------------------------'
  */
 [_NAVPAD] = KEYMAP( \
   _______, _______  ,KC_MS_BTN2,KC_MS_UP  ,KC_MS_BTN1 , _______, _______, KC_7, KC_8   , KC_9   , _______, _______, \
   KC_DEL ,KC_MS_BTN3,KC_MS_LEFT,KC_MS_DOWN,KC_MS_RIGHT, _______, _______, KC_4, KC_5   , KC_6   , KC_MINS, KC_SLSH, \
   _______, _______  , _______  , _______  , _______   , _______, _______, KC_1, KC_2   , KC_3   , KC_PPLS, KC_PAST, \
-  _______, _______  , _______  , _______  , _______   , _______, _______, KC_0,  KC_DOT, KC_COMM, KC_CIRC, KC_PERC  \
+  ONEHAND, _______  , _______  , _______  , _______   , _______, _______, KC_0,  KC_DOT, KC_COMM, KC_CIRC, KC_PERC  \
 ),
 
 /* NavF
@@ -104,37 +107,26 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+------+------+------|------+------+------+------+------+------|
  * |      |  F12 |  F3  |  F2  |  F1  |      |  End | Mute | Vol+ | Vol- |  ß   |      |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
- * |      |      |      |      |      |      |      |      |      |      |      |      |
+ * |      |      |      |      |      |      |      |      |      |      |      | 1Hand|
  * `-----------------------------------------|-----------------------------------------'
  */
 [_NAVF] = KEYMAP( \
   _______,    KC_F10,   KC_F9,   KC_F8,   KC_F7, _______, _______, KC_PGUP,  KC_UP , KC_PGDN,RALT(KC_Y), _______  , \
   KC_DEL ,    KC_F11,   KC_F6,   KC_F5,   KC_F4, _______, KC_HOME, KC_LEFT, KC_DOWN,KC_RIGHT,RALT(KC_P),RALT(KC_Q), \
   _______,    KC_F12,   KC_F3,   KC_F2,   KC_F1, _______, KC_END , KC_MUTE, KC_VOLD, KC_VOLU,RALT(KC_S), _______  , \
-  _______, _______  , _______, _______, _______, _______, _______, _______, _______, _______, _______  , _______  \
+  _______, _______  , _______, _______, _______, _______, _______, _______, _______, _______, _______  , ONEHAND  \
 ),
 
-/* Nav
- * ,-----------------------------------------|-----------------------------------------.
- * |      |      |      |      |      |      |      |      |      |      |      |      |
- * |------+------+------+------+------+------|------+------+------+------+------+------|
- * |      |      |      |      |      |      |      |      |      |      |      |      |
- * |------+------+------+------+------+------|------+------+------+------+------+------|
- * |      |      |      |      |      |      |      |      |      |      |      |      |
- * |------+------+------+------+------+------|------+------+------+------+------+------|
- * |      |      |      |      |      |      |      |      |      |      |      |      |
- * `-----------------------------------------|-----------------------------------------'
- */
 /* Lower
- * ,-----------------------------------------------------------------------------------.
+ * ,-----------------------------------------|-----------------------------------------.
  * |   ~  |   !  |   @  |   #  |   $  |   %  |   ^  |   &  |   *  |   (  |   )  | Bksp |
- * |------+------+------+------+------+-------------+------+------+------+------+------|
+ * |------+------+------+------+------+------|------+------+------+------+------+------|
  * | Del  |  F1  |  F2  |  F3  |  F4  |  F5  |  F6  |   _  |   +  |      |   \  |  |   |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
  * |      |  F7  |  F8  |  F9  |  F10 |  F11 |  F12 |ISO ~ |ISO | |      |      |Enter |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |      |             |      | Next | Vol- | Vol+ | Play |
- * `-----------------------------------------------------------------------------------'
+ * |------+------+------+------+------+------|------+------+------+------+------+------|
+ * |      |      |      |      |      |      |      |      | Next | Vol- | Vol+ | Play |
+ * `-----------------------------------------|-----------------------------------------'
  */
 [_LOWER] = KEYMAP( \
   KC_TILD, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_BSPC, \
@@ -162,15 +154,15 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 ),
 
 /* Adjust (Lower + Raise)
- * ,-----------------------------------------------------------------------------------.
+ * ,-----------------------------------------|-----------------------------------------.
  * |      | Reset|      |      |      |      |      |      |      | 1Hand|      |  Del |
- * |------+------+------+------+------+-------------+------+------+------+------+------|
- * |      |      |      |Aud on|Audoff|AGnorm|AGswap|Qwerty|Colemk|Dvorak|      |      |
+ * |------+------+------+------+------+------|------+------+------+------+------+------|
+ * |      |      |      |Aud on|Audoff|AGnorm|AGswap|Qwerty|      |      |      |      |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
  * |      |      |      |      |      |      |      |      |      |      |      |      |
- * |------+------+------+------+------+------+------+------+------+------+------+------|
- * |      |      |      |      |      |             |      |      |      |      |      |
- * `-----------------------------------------------------------------------------------'
+ * |------+------+------+------+------+------|------+------+------+------+------+------|
+ * |      |      |      |      |      |      |      |      |      |      |      |      |
+ * `-----------------------------------------|-----------------------------------------'
  */
 [_ADJUST] =  KEYMAP( \
   _______, RESET,   _______, _______, _______, _______, _______, _______, _______, ONEHAND, _______,  KC_DEL, \
@@ -178,7 +170,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, \
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______  \
 ),
-
 
 /* Onehand
  * ,-----------------------------------------|-----------------------------------------.
@@ -192,12 +183,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-----------------------------------------|-----------------------------------------'
  */
 [_ONEHAND] = KEYMAP( \
-  KC_ESC       ,  KC_Q  ,    KC_W,              KC_E,            KC_R,                   KC_T,                   KC_Y,            KC_U,    KC_I,    KC_O,    KC_P, KC_BSPC, \
-  KC_TAB       ,  KC_A  ,    KC_S,              KC_D,            KC_F,                   KC_G,                   KC_H,            KC_J,    KC_K,    KC_L, KC_SCLN, KC_QUOT, \
-  OSM(MOD_LSFT), KC_Z   ,    KC_X,              KC_C,            KC_V,                   KC_B,                   KC_N,            KC_M, KC_COMM,  KC_DOT, KC_SLSH,  KC_ENT, \
-  KC_LCTL      , KC_LGUI, KC_LALT, TD(DANCINGLAYERS), MO(_ONEHANDSYM), LT(_OTHERSIDE, KC_SPC), LT(_OTHERSIDE, KC_SPC), MO(_ONEHANDSYM), KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT  \
+  KC_ESC       ,  KC_Q  ,    KC_W,              KC_E,       KC_R,                   KC_T,                   KC_Y,       KC_U,    KC_I,    KC_O,    KC_P, KC_BSPC, \
+  KC_TAB       ,  KC_A  ,    KC_S,              KC_D,       KC_F,                   KC_G,                   KC_H,       KC_J,    KC_K,    KC_L, KC_SCLN, KC_QUOT, \
+  OSM(MOD_LSFT), KC_Z   ,    KC_X,              KC_C,       KC_V,                   KC_B,                   KC_N,       KC_M, KC_COMM,  KC_DOT, KC_SLSH,  KC_ENT, \
+  KC_LCTL      , KC_LGUI, KC_LALT, TD(DANCINGLAYERS), ONEHANDSYM, LT(_OTHERSIDE, KC_SPC), LT(_OTHERSIDE, KC_SPC), ONEHANDSYM, KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT  \
 ),
-
 
 /* Otherside
  * ,-----------------------------------------|-----------------------------------------.
@@ -212,12 +202,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 
 [_OTHERSIDE] = KEYMAP( \
-  KC_BSPC , KC_P   ,   KC_O ,    KC_I,              KC_U,    KC_U,    KC_T,              KC_R,              KC_E,    KC_W,    KC_Q,        KC_ESC, \
-  KC_QUOT , KC_SCLN,   KC_L ,    KC_K,              KC_J,    KC_H,    KC_G,              KC_F,              KC_D,    KC_S,    KC_A,        KC_TAB, \
-  KC_ENT  , KC_SLSH,  KC_DOT, KC_COMM,              KC_M,    KC_N,    KC_B,              KC_V,              KC_C,    KC_X,    KC_Z, OSM(MOD_LSFT), \
-  KC_RIGHT, KC_UP  , KC_DOWN, KC_LEFT, MO(_OTHERSIDESYM), _______, _______, MO(_OTHERSIDESYM), TD(DANCINGLAYERS), KC_LALT, KC_LGUI,       KC_LCTL  \
+  KC_BSPC , KC_P   ,   KC_O ,    KC_I,         KC_U,    KC_U,    KC_T,         KC_R,              KC_E,    KC_W,    KC_Q,        KC_ESC, \
+  KC_QUOT , KC_SCLN,   KC_L ,    KC_K,         KC_J,    KC_H,    KC_G,         KC_F,              KC_D,    KC_S,    KC_A,        KC_TAB, \
+  KC_ENT  , KC_SLSH,  KC_DOT, KC_COMM,         KC_M,    KC_N,    KC_B,         KC_V,              KC_C,    KC_X,    KC_Z, OSM(MOD_LSFT), \
+  KC_RIGHT, KC_UP  , KC_DOWN, KC_LEFT, OTHERSIDESYM, _______, _______, OTHERSIDESYM, TD(DANCINGLAYERS), KC_LALT, KC_LGUI,       KC_LCTL  \
 ),
-
 
 /* OnehandSym
  * ,-----------------------------------------|-----------------------------------------.
@@ -231,12 +220,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-----------------------------------------|-----------------------------------------'
  */
 [_ONEHANDSYM] = KEYMAP( \
-   KC_GRV,    KC_1,    KC_2,    KC_3,    KC_4,              KC_5,              KC_6,    KC_7,    KC_8,    KC_9,    KC_0, KC_BSPC, \
-  KC_TILD, KC_EXLM,   KC_AT, KC_HASH,  KC_DLR,           KC_PERC,           KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, XXXXXXX, \
-  XXXXXXX, KC_MINS, KC_LABK, KC_LBRC, KC_LCBR,           KC_LPRN,           KC_RPRN, KC_RCBR, KC_RBRC, KC_RABK,  KC_EQL, KC_BSLS, \
-  XXXXXXX, KC_UNDS, XXXXXXX, XXXXXXX, _______, MO(_OTHERSIDESYM), MO(_OTHERSIDESYM), _______, XXXXXXX, XXXXXXX, KC_PLUS, KC_PIPE  \
+   KC_GRV,    KC_1,    KC_2,    KC_3,    KC_4,         KC_5,         KC_6,    KC_7,    KC_8,    KC_9,    KC_0, KC_BSPC, \
+  KC_TILD, KC_EXLM,   KC_AT, KC_HASH,  KC_DLR,      KC_PERC,      KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, XXXXXXX, \
+  XXXXXXX, KC_MINS, KC_LABK, KC_LBRC, KC_LCBR,      KC_LPRN,      KC_RPRN, KC_RCBR, KC_RBRC, KC_RABK,  KC_EQL, KC_BSLS, \
+  XXXXXXX, KC_UNDS, XXXXXXX, XXXXXXX, _______, OTHERSIDESYM, OTHERSIDESYM, _______, XXXXXXX, XXXXXXX, KC_PLUS, KC_PIPE  \
 ),
-
 
 /* OthersideSym
  * ,-----------------------------------------|-----------------------------------------.
@@ -257,7 +245,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_PIPE, KC_PLUS, XXXXXXX, XXXXXXX, _______, _______, _______, _______, XXXXXXX, XXXXXXX, KC_UNDS, XXXXXXX  \
 ),
 
-
 /* OnehandNumpad
  * ,-----------------------------------------|-----------------------------------------.
  * |      |      |   9  |   8  |   7  |      |      |   7  |   8  |   9  |      |      |
@@ -275,7 +262,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_PAST, KC_PLUS,    KC_3,         KC_2,   KC_1, XXXXXXX, XXXXXXX,   KC_1,         KC_2,    KC_3, KC_PPLS, KC_PAST, \
   KC_PERC, KC_CIRC, XXXXXXX, TO(_ONEHAND), KC_DOT,    KC_0,    KC_0, KC_DOT, TO(_ONEHAND), XXXXXXX, KC_CIRC, KC_PERC  \
 ),
-
 
 /* OnehandNav
  * ,-----------------------------------------|-----------------------------------------.
@@ -295,7 +281,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      XXXXXXX,    XXXXXXX, XXXXXXX, TO(_ONEHAND),  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, TO(_ONEHAND),  XXXXXXX,    XXXXXXX,    XXXXXXX  \
 ),
 
-
 /* OnehandF
  * ,-----------------------------------------|-----------------------------------------.
  * | OHOFF|  F10 |  F9  |  F8  |  F7  |      |      |  F7  |  F8  |  F9  | F10  | OHOFF|
@@ -314,6 +299,27 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   XXXXXXX, XXXXXXX, XXXXXXX, TO(_ONEHAND), XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, TO(_ONEHAND), XXXXXXX, XXXXXXX , XXXXXXX  \
 ),
 
+/* empty layout template
+
+ * Nav
+ * ,-----------------------------------------|-----------------------------------------.
+ * |      |      |      |      |      |      |      |      |      |      |      |      |
+ * |------+------+------+------+------+------|------+------+------+------+------+------|
+ * |      |      |      |      |      |      |      |      |      |      |      |      |
+ * |------+------+------+------+------+------|------+------+------+------+------+------|
+ * |      |      |      |      |      |      |      |      |      |      |      |      |
+ * |------+------+------+------+------+------|------+------+------+------+------+------|
+ * |      |      |      |      |      |      |      |      |      |      |      |      |
+ * `-----------------------------------------|-----------------------------------------'
+ *
+
+[_] = KEYMAP( \
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, \
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, \
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, \
+  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______  \
+),
+*/
 };
 
 
@@ -357,19 +363,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       }
       return false;
       break;
-    case ONEHAND:
-      if (record->event.pressed) {
-        persistent_default_layer_set(1UL<<_ONEHAND);
-      }
-      return false;
-      break;
-    case OHOFF:
-      if (record->event.pressed) {
-        persistent_default_layer_set(1UL<<_QWERTY);
-        layer_move(_QWERTY);
-      }
-      return false;
-      break;
     case LOWER:
       if (record->event.pressed) {
         layer_on(_LOWER);
@@ -395,6 +388,47 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         layer_on(_ADJUST);
       } else {
         layer_off(_ADJUST);
+      }
+      return false;
+      break;
+    case ONEHAND:
+      if (record->event.pressed) {
+        persistent_default_layer_set(1UL<<_ONEHAND);
+      }
+      return false;
+      break;
+    case OTHERSIDE:
+      if (record->event.pressed) {
+        layer_on(_OTHERSIDE);
+        update_tri_layer(_OTHERSIDE, _ONEHANDSYM, _OTHERSIDESYM);
+      } else {
+        layer_off(_OTHERSIDE);
+        update_tri_layer(_OTHERSIDE, _ONEHANDSYM, _OTHERSIDESYM);
+      }
+      return false;
+      break;
+    case ONEHANDSYM:
+      if (record->event.pressed) {
+        layer_on(_ONEHANDSYM);
+        update_tri_layer(_OTHERSIDE, _ONEHANDSYM, _OTHERSIDESYM);
+      } else {
+        layer_off(_ONEHANDSYM);
+        update_tri_layer(_OTHERSIDE, _ONEHANDSYM, _OTHERSIDESYM);
+      }
+      return false;
+      break;
+    case OTHERSIDESYM:
+      if (record->event.pressed) {
+        layer_on(_OTHERSIDESYM);
+      } else {
+        layer_off(_OTHERSIDESYM);
+      }
+      return false;
+      break;
+    case OHOFF:
+      if (record->event.pressed) {
+        persistent_default_layer_set(1UL<<_QWERTY);
+        layer_move(_QWERTY);
       }
       return false;
       break;

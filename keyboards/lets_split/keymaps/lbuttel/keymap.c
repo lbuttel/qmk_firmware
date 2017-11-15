@@ -21,6 +21,7 @@ extern keymap_config_t keymap_config;
 #define _ONEHANDNAV 11
 #define _ONEHANDPAD 12
 #define _ONEHANDF 13
+#define _GAME 15
 
 
 #define DANCINGLAYERS 0
@@ -36,6 +37,7 @@ enum custom_keycodes {
   LOWER,
   RAISE,
   ADJUST,
+  GAME
 };
 
 // Fillers to make layering more clear
@@ -157,17 +159,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ,-----------------------------------------|-----------------------------------------.
  * |      | Reset|      |      |      |      |      |      |      | 1Hand|      |  Del |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
- * |      |      |      |Aud on|Audoff|AGnorm|AGswap|Qwerty|      |      |      |      |
+ * |      |      |      |Aud on|Audoff| Game |AGswap|Qwerty|      |      |      |      |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
- * |      |      |      |      |      |      |      |      |      |      |      |      |
+ * |      |      |      |      |      |      |AGnorm|      |      |      |      |      |
  * |------+------+------+------+------+------|------+------+------+------+------+------|
  * |      |      |      |      |      |      |      |      |      |      |      |      |
  * `-----------------------------------------|-----------------------------------------'
  */
 [_ADJUST] =  KEYMAP( \
   _______, RESET,   _______, _______, _______, _______, _______, _______, _______, ONEHAND, _______,  KC_DEL, \
-  _______, _______, _______,  AU_ON,   AU_OFF,  AG_NORM, AG_SWAP, QWERTY, _______, _______, _______, _______, \
-  _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, \
+  _______, _______, _______,   AU_ON,  AU_OFF,    GAME, AG_SWAP,  QWERTY, _______, _______, _______, _______, \
+  _______, _______, _______, _______, _______, _______, AG_NORM, _______, _______, _______, _______, _______, \
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______  \
 ),
 
@@ -299,6 +301,24 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   XXXXXXX, XXXXXXX, XXXXXXX, TO(_ONEHAND), XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, TO(_ONEHAND), XXXXXXX, XXXXXXX , XXXXXXX  \
 ),
 
+/* Game
+ * ,-----------------------------------------|-----------------------------------------.
+ * | Esc  |   1  |   2  |   3  |   4  |   5  |   Y  |   U  |   I  |   O  |   P  | Bksp |
+ * |------+------+------+------+------+------|------+------+------+------+------+------|
+ * | Tab  |   Q  |   W  |   E  |   R  |   T  |   H  |   J  |   K  |   L  |   ;  |  "   |
+ * |------+------+------+------+------+------|------+------+------+------+------+------|
+ * | Shift|   A  |   S  |   D  |   F  |   G  |   N  |   M  |   ,  |   .  |   /  | Enter|
+ * |------+------+------+------+------+------|------+------+------+------+------+------|
+ * | Ctrl | GUI  | Alt  |   C  |Space |Space |Space |QWERTY| Left | Down |  Up  |Right |
+ * `-----------------------------------------|-----------------------------------------'
+ */
+[_GAME] = KEYMAP( \
+  KC_ESC ,    KC_1,    KC_2, KC_3,   KC_4,   KC_5,   KC_Y,   KC_U,    KC_I,    KC_O,    KC_P, KC_BSPC, \
+  KC_TAB ,    KC_Q,    KC_W, KC_E,   KC_R,   KC_T,   KC_H,   KC_J,    KC_K,    KC_L, KC_SCLN, KC_QUOT, \
+  KC_LSFT,    KC_A,    KC_S, KC_D,   KC_F,   KC_G,   KC_N,   KC_M, KC_COMM,  KC_DOT, KC_SLSH,  KC_ENT, \
+  KC_LCTL, KC_LGUI, KC_LALT, KC_C, KC_SPC, KC_SPC, KC_SPC, QWERTY, KC_LEFT, KC_DOWN,   KC_UP, KC_RGHT  \
+),
+
 /* empty layout template
 
  * Nav
@@ -360,6 +380,13 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
           PLAY_SONG(tone_qwerty);
         #endif
         persistent_default_layer_set(1UL<<_QWERTY);
+      }
+      return false;
+      break;
+    case GAME:
+      if (record->event.pressed) {
+        persistent_default_layer_set(1UL<<_GAME);
+        layer_move(_QWERTY);
       }
       return false;
       break;

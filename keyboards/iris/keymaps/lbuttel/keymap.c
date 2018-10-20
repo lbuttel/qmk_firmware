@@ -122,8 +122,8 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                     KC_MPRV, _______, _______,                   _______, KC_MPLY , KC_MNXT
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ),
-*/
-
+  
+  
   [_LOWER] = LAYOUT(
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
      KC_TILD, KC_EXLM, KC_AT,   KC_HASH, KC_DLR,  KC_PERC,                            KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_BSPC,
@@ -138,7 +138,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ),
   
-  /* Custom Raise
+/* Custom Raise
  * ,-----------------------------------------.				   ,-----------------------------------------.
  * |   `  |      |      |      |      |      |				   |      |      |      |      |      |      |
  * |------+------+------+------+------+------|				   |------+------+------+------+------+------|
@@ -205,8 +205,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
                                     _______, _______, _______,                   _______, _______, _______
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
-  )
-};
+  ),
 
 /* Game - default layout with out any fancy stuff like oneshot modifiers or hold to switch layer
  *,-----------------------------------------.				   ,-----------------------------------------.
@@ -233,7 +232,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
                                TD(GAMEOVER),  KC_SPC,  KC_SPC,                   ENTERFN,   RAISE,   LOWER
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
-  ),
+  )
 
 /* empty layout template
  * ,-----------------------------------------.				   ,-----------------------------------------.
@@ -262,6 +261,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   ),
 */
+};
 
 // tapdance stuff
 void dance_layers(qk_tap_dance_state_t *state, void *user_data) {
@@ -278,8 +278,8 @@ void dance_layers(qk_tap_dance_state_t *state, void *user_data) {
 }
 
 qk_tap_dance_action_t tap_dance_actions[] = {
-  [DANCINGLAYERS] = ACTION_TAP_DANCE_FN(dance_layers);
-  [DOTCOM] = ACTION_TAP_DANCE_DOUBLE(KC_COMM, KC_DOT);
+  [DANCINGLAYERS] = ACTION_TAP_DANCE_FN(dance_layers),
+  [DOTCOM] = ACTION_TAP_DANCE_DOUBLE(KC_COMM, KC_DOT),
   [GAMEOVER] = ACTION_TAP_DANCE_DOUBLE(KC_LGUI, QWERTY)
 };
 
@@ -321,8 +321,7 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
       break;
 	case GAME:
       if (record->event.pressed) {
-        persistent_default_layer_set(1UL<<_GAME);
-        layer_move(_QWERTY);
+        set_single_persistent_default_layer(_GAME);
       }
       return false;
       break;

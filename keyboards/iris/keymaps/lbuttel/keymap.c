@@ -15,7 +15,7 @@ extern keymap_config_t keymap_config;
 #define _ONEHANDNAV 11
 #define _ONEHANDPAD 12
 #define _ONEHANDF 13
-#define _GAME 15
+#define _GAME 1
 
 enum custom_keycodes {
   QWERTY = SAFE_RANGE,
@@ -63,7 +63,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
      KC_LALT, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                               KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-     KC_LCTL, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    SPACEFN,          ENTERFN,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT,
+     KC_LCTL, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,    KC_BSPC,          ENTERFN,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
                                     KC_LGUI,  LSHIFT,  SPACEFN,                   ENTERFN,  RAISE,   LOWER
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
@@ -155,7 +155,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //┌────────┬────────┬────────┬────────┬────────┬────────┐                          ┌────────┬────────┬────────┬────────┬────────┬────────┐
      KC_GRV , _______, _______, _______, _______, _______,                            _______, _______, _______, _______, _______, _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-  S(KC_NUHS), _______, _______, _______, KC_CALC, _______,                            _______, _______, _______, _______, _______, S(KC_NUBS),
+     KC_NUHS, _______, _______, _______, KC_CALC, _______,                            _______, _______, _______, _______, _______, KC_NUBS,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
      _______,  KC_MINS, KC_LABK, KC_LBRC, KC_LCBR, KC_LPRN,                           KC_RPRN, KC_RCBR, KC_RBRC, KC_RABK,  KC_EQL, KC_BSLS,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
@@ -199,7 +199,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
      _______, _______, _______, _______, _______, _______,                            _______, _______, _______, ONEHAND, _______, _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
-     _______, _______, _______, _______, _______,   GAME ,                            _______,  QWERTY, _______, _______, _______, _______,
+     _______, _______, _______, _______, _______, DF(_GAME) ,                            _______,  QWERTY, _______, _______, _______, _______,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
      _______, _______, _______, _______, _______, _______, _______,          _______, _______, _______, _______, _______, _______, _______,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
@@ -228,9 +228,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   //├────────┼────────┼────────┼────────┼────────┼────────┤                          ├────────┼────────┼────────┼────────┼────────┼────────┤
      KC_LCTL, KC_A,    KC_S,    KC_D,    KC_F,    KC_G,                               KC_H,    KC_J,    KC_K,    KC_L,    KC_SCLN, KC_QUOT,
   //├────────┼────────┼────────┼────────┼────────┼────────┼────────┐        ┌────────┼────────┼────────┼────────┼────────┼────────┼────────┤
-    MOD_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,     KC_SPC,          ENTERFN,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT,
+     KC_LSFT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,     KC_SPC,          ENTERFN,  KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT,
   //└────────┴────────┴────────┴───┬────┴───┬────┴───┬────┴───┬────┘        └───┬────┴───┬────┴───┬────┴───┬────┴────────┴────────┴────────┘
-                               TD(GAMEOVER),  KC_SPC,  KC_SPC,                   ENTERFN,   RAISE,   LOWER
+                                    KC_LGUI,  KC_SPC,  KC_SPC,                   ENTERFN,   RAISE,   LOWER
                                 // └────────┴────────┴────────┘                 └────────┴────────┴────────┘
   )
 
@@ -279,8 +279,7 @@ void dance_layers(qk_tap_dance_state_t *state, void *user_data) {
 
 qk_tap_dance_action_t tap_dance_actions[] = {
   [DANCINGLAYERS] = ACTION_TAP_DANCE_FN(dance_layers),
-  [DOTCOM] = ACTION_TAP_DANCE_DOUBLE(KC_COMM, KC_DOT),
-  [GAMEOVER] = ACTION_TAP_DANCE_DOUBLE(KC_LGUI, QWERTY)
+  [DOTCOM] = ACTION_TAP_DANCE_DOUBLE(KC_COMM, KC_DOT)
 };
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
@@ -316,12 +315,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         layer_on(_ADJUST);
       } else {
         layer_off(_ADJUST);
-      }
-      return false;
-      break;
-	case GAME:
-      if (record->event.pressed) {
-        set_single_persistent_default_layer(_GAME);
       }
       return false;
       break;

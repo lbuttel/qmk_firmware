@@ -168,23 +168,23 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
   /* Keymap _MIDI: MIDI Layer
    * ,----------------------------------------------------------------.
-   * |   |   |   |   |   |   |   |   |   |   |   |   |   |       |    |
+   * |_BL|   |   |   |   |   |   |   |   |   |   |   |   |       |    |
    * |----------------------------------------------------------------|
    * |     |   |   | C#| D#|   | F#| G#| A#|   |   |   |   |     |    |
    * |----------------------------------------------------------------|
-   * |      |   | C | D | E | F | G | A | B | C |   |   |        |_BL |
+   * |      |   | C | D | E | F | G | A | B | C |   |   |        |CHUp|
    * |----------------------------------------------------------------|
-   * |        |   |   |   |   |   |   |   |   |   |   |     |OctU|    |
+   * |        |   |   |   |   |   |   |   |   |   |   |     |OctU|CHDn|
    * |----------------------------------------------------------------|
-   * |    |    |    |       Sustain          |   |   |   |  |OctD|    |
+   * |    |    |    |       Sustain          |  |  |   |TraD|OctD|TraU|
    * `----------------------------------------------------------------'
    */
 [_MIDI] = LAYOUT_ansi(
-  xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx,    xxxxxxx, xxxxxxx, \
+  TO(_BL), xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx,    xxxxxxx, xxxxxxx, \
   xxxxxxx  , xxxxxxx, xxxxxxx, MI_Cs_3, MI_Ds_3, xxxxxxx, MI_Fs_3, MI_Gs_3, MI_As_3, xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx,  xxxxxxx, xxxxxxx, \
-  xxxxxxx    , xxxxxxx, MI_C_3 , MI_D_3 , MI_E_3 , MI_F_3 , MI_G_3 , MI_A_3 , MI_B_3 , MI_C_4 , xxxxxxx, xxxxxxx,         xxxxxxx, TO(_BL), \
-  xxxxxxx      , xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx,       xxxxxxx, MI_OCTU, xxxxxxx, \
-  xxxxxxx , xxxxxxx, xxxxxxx,                       MI_SUS                          , xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx, MI_OCTD, xxxxxxx),
+  xxxxxxx    , xxxxxxx, MI_C_3 , MI_D_3 , MI_E_3 , MI_F_3 , MI_G_3 , MI_A_3 , MI_B_3 , MI_C_4 , xxxxxxx, xxxxxxx,         xxxxxxx,  MI_CHU, \
+  xxxxxxx      , xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx,       xxxxxxx, MI_OCTU,  MI_CHD, \
+  xxxxxxx , xxxxxxx, xxxxxxx,                       MI_SUS                          , xxxxxxx, xxxxxxx, xxxxxxx,MI_TRNSD, MI_OCTD,MI_TRNSU),
 };
 
 

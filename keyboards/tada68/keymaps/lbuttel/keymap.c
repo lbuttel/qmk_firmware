@@ -210,7 +210,7 @@ void action_function(keyrecord_t *record, uint8_t id, uint8_t opt) {
           breathing_disable();
           backlight_set(--led_mode);
         } else {
-          breathing_speed_dec(1);
+          breathing_period_dec();
           led_mode--;
         }
       }
@@ -220,10 +220,11 @@ void action_function(keyrecord_t *record, uint8_t id, uint8_t opt) {
         if (led_mode < 4) {
           backlight_set(++led_mode);
         } else if (led_mode == 4) {
-          breathing_speed_set(++led_mode);
+          breathing_period_set(1);
           breathing_enable();
+	  led_mode++;
         } else if (led_mode > 4) {
-          breathing_speed_inc(1);
+          breathing_period_inc();
           led_mode++;
         }
       }

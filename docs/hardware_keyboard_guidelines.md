@@ -216,7 +216,11 @@ The following functions are typically defined in this file:
 
 ### `<keyboard>.h`
 
+<<<<<<< HEAD
 This file can contain function prototypes for custom functions and other header file code utilised by `<keyboard>.c`. The `<keyboard>.c` file should include this file. This is not a required file.
+=======
+This file can contain function prototypes for custom functions and other header file code utilised by `<keyboard_name>.c`. The `<keyboard_name>.c` file should include this file. This is not a required file.
+>>>>>>> fc913bf10f ([Docs] Tidy up keyboard guidelines (#25461))
 
 ## Image/Hardware Files
 

@@ -1,5 +1,4 @@
 #include QMK_KEYBOARD_H
-#include "tada68.h"
 #include "keymap_german.h"
 
 // Each layer gets a name for readability, which is then used in the keymap matrix below.
@@ -21,23 +20,18 @@
 #define TD_DOT_COM 0
 #define TD_NP_SPC 1
 
-// custom functions
-#define NPAD 0
-#define BLDN 1
-#define BLUP 2
-
 //led mode
 uint8_t led_mode = 0;
 
-qk_tap_dance_action_t tap_dance_actions[] = {
+tap_dance_action_t tap_dance_actions[] = {
   [TD_DOT_COM] = ACTION_TAP_DANCE_DOUBLE(KC_PDOT, KC_PCMM),
   [TD_NP_SPC] = ACTION_TAP_DANCE_DOUBLE(KC_KP_0, KC_SPC)
 };
 
-const uint16_t PROGMEM fn_actions[] = {
-  [NPAD] = ACTION_FUNCTION(NPAD),  // Calls action_function()
-  [BLDN] = ACTION_FUNCTION(BLDN),
-  [BLUP] = ACTION_FUNCTION(BLUP),
+enum custom_keycodes {
+  NPAD = 1,
+  BLDN = 2,
+  BLUP = 3
 };
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
@@ -59,7 +53,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_TAB   ,KC_Q,   KC_W,   KC_E,   KC_R,   KC_T,   KC_Y,   KC_U,   KC_I,   KC_O,   KC_P,   KC_LBRC, KC_RBRC, KC_BSLS, KC_DEL, \
   LT(_FL2,KC_DEL),KC_A,KC_S, KC_D,   KC_F,   KC_G,   KC_H ,  KC_J,   KC_K,   KC_L,   KC_SCLN, KC_QUOT,       KC_ENT,  KC_PGUP, \
   OSM(MOD_LSFT),KC_Z, KC_X,   KC_C,   KC_V,   KC_B,   KC_N,   KC_M,   KC_COMM, KC_DOT, KC_SLSH, OSM(MOD_RSFT), KC_UP, KC_PGDN, \
-  KC_LCTL, KC_LGUI, KC_LALT,             LT(_FL1, KC_SPC)             , KC_RALT, F(NPAD), KC_RCTRL, KC_LEFT, KC_DOWN, KC_RGHT),
+  KC_LCTL, KC_LGUI, KC_LALT,             LT(_FL1, KC_SPC)             , KC_RALT, NPAD, KC_RCTL, KC_LEFT, KC_DOWN, KC_RGHT),
 
   /* Keymap _FL1: Function Layer
    * ,----------------------------------------------------------------.
@@ -78,7 +72,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______,   KC_F1,   KC_F2,   KC_F3,   KC_F4,   KC_F5,   KC_F6,   KC_F7,   KC_F8,   KC_F9,   KC_F10,   KC_F11,   KC_F12,  KC_DEL,  KC_INS, \
   _______  , _______, KC_MS_BTN1,KC_MS_UP,KC_MS_BTN2,_______,_______, KC_PGUP, KC_UP, KC_PGDN, _______,RALT(KC_Y),_______, _______,_______, \
   _______    , KC_MS_BTN3, KC_MS_LEFT,KC_MS_DOWN,KC_MS_RIGHT,_______,KC_HOME,KC_LEFT,KC_DOWN,KC_RIGHT,RALT(KC_P),RALT(KC_Q),_______,TO(_MIDI), \
-  _______      , _______, _______, F(BLDN),  BL_TOGG, F(BLUP), KC_END ,  KC_MUTE, KC_VOLD,  KC_VOLU,RALT(KC_S), _______, _______,TO(_GAME), \
+  _______      , _______, _______, BLDN,  BL_TOGG, BLUP, KC_END ,  KC_MUTE, KC_VOLD,  KC_VOLU,RALT(KC_S), _______, _______,TO(_GAME), \
   _______, _______, _______,                 _______                                , _______, _______, _______, _______, _______, _______),
 
 
@@ -113,7 +107,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    * |----------------------------------------------------------------|
    * |        |   |   |   |   |   |   | 1 | 2 | 3 | + |      |   |    |
    * |----------------------------------------------------------------|
-   * |    |    |    |            0           | . |   |   |   |   |    |
+   * |    |    |    |            0           | . |  |NPAD|   |   |    |
    * `----------------------------------------------------------------'
    */
 [_FL3] = LAYOUT_ansi(
@@ -121,7 +115,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______  , _______, _______, _______, _______, _______, _______, KC_KP_7, KC_KP_8, KC_KP_9, _______, KC_PSLS, _______,  _______, _______, \
   _______    , _______, _______, _______, _______, _______, _______, KC_KP_4, KC_KP_5, KC_KP_6, KC_PMNS, KC_PAST,     KC_KP_ENTER, _______, \
   _______      , _______, _______, _______, _______, _______, _______, KC_KP_1, KC_KP_2, KC_KP_3, KC_PPLS,       _______, _______, _______, \
-  _______ , _______, _______,                 TD(TD_NP_SPC)                        ,TD(TD_DOT_COM),_______,_______,_______,_______,_______),
+  _______ , _______, _______,                 TD(TD_NP_SPC)                        ,TD(TD_DOT_COM), NPAD ,_______,_______,_______, _______),
 
 
   /* Keymap _GAME: Game Layer
@@ -142,7 +136,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_TAB   ,KC_Q,   KC_W,   KC_E,   KC_R,   KC_T,   KC_Y,   KC_U,   KC_I,   KC_O,   KC_P,   KC_LBRC, KC_RBRC, KC_BSLS, KC_DEL, \
   KC_CAPS        ,KC_A,KC_S, KC_D,   KC_F,   KC_G,   KC_H ,  KC_J,   KC_K,   KC_L,   KC_SCLN, KC_QUOT,       KC_ENT,  KC_PGUP, \
   KC_LSFT      ,KC_Z, KC_X,   KC_C,   KC_V,   KC_B,   KC_N,   KC_M,   KC_COMM, KC_DOT, KC_SLSH,       KC_RSFT, KC_UP, KC_PGDN, \
-  KC_LCTL, KC_LGUI, KC_LALT,                   KC_SPC               , KC_RALT, TT(_GFN), KC_RCTRL, KC_LEFT, KC_DOWN, KC_RGHT),
+  KC_LCTL, KC_LGUI, KC_LALT,                   KC_SPC               , KC_RALT, TT(_GFN), KC_RCTL, KC_LEFT, KC_DOWN, KC_RGHT),
 
 
   /* Keymap _GFN: Game Function Layer
@@ -181,10 +175,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
    */
 [_MIDI] = LAYOUT_ansi(
   TO(_BL), xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx,    xxxxxxx, xxxxxxx, \
-  xxxxxxx  , xxxxxxx, xxxxxxx, MI_Cs_3, MI_Ds_3, xxxxxxx, MI_Fs_3, MI_Gs_3, MI_As_3, xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx,  xxxxxxx, xxxxxxx, \
-  xxxxxxx    , xxxxxxx, MI_C_3 , MI_D_3 , MI_E_3 , MI_F_3 , MI_G_3 , MI_A_3 , MI_B_3 , MI_C_4 , xxxxxxx, xxxxxxx,         xxxxxxx,  MI_CHU, \
-  xxxxxxx      , xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx,       xxxxxxx, MI_OCTU,  MI_CHD, \
-  xxxxxxx , xxxxxxx, xxxxxxx,                       MI_SUS                          , xxxxxxx, xxxxxxx, xxxxxxx,MI_TRNSD, MI_OCTD,MI_TRNSU),
+  xxxxxxx  , xxxxxxx, xxxxxxx,  MI_Cs3,  MI_Ds3, xxxxxxx,  MI_Fs3,  MI_Gs3,  MI_As3, xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx,  xxxxxxx, xxxxxxx, \
+  xxxxxxx    , xxxxxxx,  MI_C3 ,  MI_D3 ,  MI_E3 ,  MI_F3 ,  MI_G3 ,  MI_A3 ,  MI_B3 ,  MI_C4 , xxxxxxx, xxxxxxx,         xxxxxxx, MI_CHNU, \
+  xxxxxxx      , xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx, xxxxxxx,       xxxxxxx, MI_OCTU, MI_CHND, \
+  xxxxxxx , xxxxxxx, xxxxxxx,                       MI_SUST                         , xxxxxxx, xxxxxxx, xxxxxxx, MI_TRSD, MI_OCTD, MI_TRSU),
 };
 
 
@@ -193,13 +187,13 @@ void tap(uint16_t keycode){
   unregister_code(keycode);
 }
 
-void action_function(keyrecord_t *record, uint8_t id, uint8_t opt) {
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 
-  switch (id) {
+  switch (keycode) {
     case NPAD:
       if (record->event.pressed) {
         layer_invert(_FL3);
-        tap(KC_NLCK);
+        tap(KC_NUM);
       }
     break;
     case BLDN:
@@ -230,9 +224,20 @@ void action_function(keyrecord_t *record, uint8_t id, uint8_t opt) {
       }
     break;
   }
+
+  return true;
 };
 
-void led_set_user(uint8_t usb_led) {
+bool led_update_user(led_t led_state) {
+    if (led_state.caps_lock) {  //if caps lock is on
+      PORTB |= (1<<6);
+    } else {
+      PORTB &= ~(1<<6);
+    }
+    return true;
+}
+
+/*void led_set_user(uint8_t usb_led) {
   if (usb_led & (1<<USB_LED_CAPS_LOCK)) {
     // Turn capslock on
     PORTB |= (1<<6);
@@ -240,4 +245,4 @@ void led_set_user(uint8_t usb_led) {
     // Turn capslock off
     PORTB &= ~(1<<6);
   }
-}
+}*/

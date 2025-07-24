@@ -1,7 +1,5 @@
 #define BACKLIGHT_BREATHING
 
-#define BACKLIGHT_LEVELS 8
-
 #define TAPPING_TERM 200
 
 #define MIDI_ADVANCED

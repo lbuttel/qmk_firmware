@@ -165,7 +165,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * `-----------------------------------------|-----------------------------------------'
  */
 [_ADJUST] =  LAYOUT( \
-  _______, RESET,   _______, _______, _______, _______, _______, _______, _______, ONEHAND, _______,  KC_DEL, \
+  _______, QK_BOOT,   _______, _______, _______, _______, _______, _______, _______, ONEHAND, _______,  KC_DEL, \
   _______, _______, _______,   AU_ON,  AU_OFF,    GAME, AG_SWAP,  QWERTY, _______, _______, _______, _______, \
   _______, _______, _______, _______, _______, _______, AG_NORM, _______, _______, _______, _______, _______, \
   _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______, _______  \
@@ -341,7 +341,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 
 
-void dance_layers(qk_tap_dance_state_t *state, void *user_data) {
+void dance_layers(tap_dance_state_t *state, void *user_data) {
   switch (state->count) {
     case 1:
       layer_move(_ONEHANDNAV);
@@ -354,7 +354,7 @@ void dance_layers(qk_tap_dance_state_t *state, void *user_data) {
   }
 }
 
-qk_tap_dance_action_t tap_dance_actions[] = {
+tap_dance_action_t tap_dance_actions[] = {
   [DANCINGLAYERS] = ACTION_TAP_DANCE_FN(dance_layers)
 };
 
